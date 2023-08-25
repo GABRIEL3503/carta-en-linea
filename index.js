@@ -2,7 +2,8 @@ const express = require('express');
 const { Client } = require('@notionhq/client');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 
 // Inicializar el cliente de Notion
 const notion = new Client({
