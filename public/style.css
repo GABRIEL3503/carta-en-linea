@@ -64,7 +64,7 @@ width: 90vw;
 
  .hero img{
     align-items: center;
-    object-fit: cover;
-    width: 99vw;
-    height: 46vh;
+ 
+    width: 100vw;
+    height: auto;
 }
