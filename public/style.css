@@ -19,8 +19,11 @@ h1 {
     padding: 20px;
     background-color: transparent;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
 }
-
+.menu-item{
+    margin-bottom: 24px;
+}
 img{
    width: 40vw;
 }
@@ -60,6 +63,9 @@ p{
     .menu-item img{
 width: 90vw;
     }
+    .hero img{
+        height: 120%;
+    }
  }
 
  .hero img{
@@ -67,4 +73,10 @@ width: 90vw;
  
     width: 100vw;
     height: auto;
+}
+button{
+    padding: 6px 12px;
+    border-radius: 7px;
+    color: white;
+    background-color: #333;
 }
