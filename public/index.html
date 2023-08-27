@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="774692314852-mr3vqnhj9l5bhblk4u7s3v9m0teoups8.apps.googleusercontent.com">
     <title>Carta Online</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
@@ -13,12 +14,44 @@
 <body>
    <div class="container-logo"><img class="logo" src="logo.png" alt=""></div>
    <div class="hero"><img src="2.webp" alt=""></div>
+   <div class="g-signin2" data-onsuccess="onSignIn"></div>
    <div id="menu-container">
         <!-- Aquí se mostrarán los ítems del menú -->
     </div>
+    <a href="#" onclick="signOut();">Sign out</a>
+<script>
+
+
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
+
+
+
+
+function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  console.log('Name: ' + profile.getName());
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+}
+
+  </script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="script.js"></script>
   
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+
 </body>
 </html>
+
+
+<!-- id e cliente 774692314852-mr3vqnhj9l5bhblk4u7s3v9m0teoups8.apps.googleusercontent.com -->
+<!-- secreto de cliente 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 -->
+
+<!-- clave de api AIzaSyASqlkzHcBdK38IWav17o5Rfbx7sB1ynis -->
