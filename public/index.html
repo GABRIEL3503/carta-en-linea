@@ -32,13 +32,27 @@
 
 
 
-function onSignIn(googleUser) {
+  function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  const email = profile.getEmail();
+  
+  // Selecciona todos los botones con la clase "btn-especial"
+  const specialButtons = document.querySelectorAll('.btn-especial');
+  
+  if (email === 'octopus.wd@gmail.com') {
+    // Muestra todos los botones
+    specialButtons.forEach(button => {
+      button.style.display = 'block';  // O 'block', dependiendo de tu diseño
+    });
+  } else {
+    // Oculta todos los botones
+    specialButtons.forEach(button => {
+      button.style.display = 'none';
+    });
+  }
 }
+
+ 
 
   </script>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
