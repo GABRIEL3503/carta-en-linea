@@ -1,7 +1,9 @@
 const express = require('express');
+const cors = require('cors');  // <-- Añadir esta línea
 const { Client } = require('@notionhq/client');
 
 const app = express();
+app.use(cors());  // <-- Añadir esta línea
 const PORT = process.env.PORT || 3000;
 
 
