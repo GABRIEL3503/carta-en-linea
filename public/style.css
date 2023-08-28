@@ -84,3 +84,7 @@ button{
 .subtitulo{
     margin-bottom: 23px;
 }
+
+.btn-especial{
+display: none;
+}
