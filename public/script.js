@@ -6,12 +6,15 @@ function loadMenu() {
     .then(data => {
         const menuContainer = document.getElementById('menu-container');
 
-        const groupedMenu = {};
-        data.forEach(item => {
-            const category = item.properties.categoria.select.name;
-            if (!groupedMenu[category]) groupedMenu[category] = [];
-            groupedMenu[category].push(item);
-        });
+   const groupedMenu = {};
+data.forEach(item => {
+    if(item.properties && item.properties.categoria && item.properties.categoria.multi_select[0]) {
+        const category = item.properties.categoria.multi_select[0].name;
+        if (!groupedMenu[category]) groupedMenu[category] = [];
+        groupedMenu[category].push(item);
+    }
+});
+
 
         Object.keys(groupedMenu).forEach(category => {
             const subtitle = document.createElement('h2');
