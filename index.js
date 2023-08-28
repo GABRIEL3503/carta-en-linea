@@ -72,23 +72,67 @@ let cachedMenuItems = null;  // Caché en variable
 
 app.get('/menu', async (req, res) => {
     const cacheKey = "menuItems";
-    const cachedData = myCache.get(cacheKey);  // Caché en servidor
-    
+    const cachedData = myCache.get(cacheKey);
+
     if (cachedData) {
         return res.json(cachedData);
     }
 
-    if (cachedMenuItems) {  // Caché en variable
+    if (cachedMenuItems) {
         return res.json(cachedMenuItems);
     }
 
     try {
         const response = await notion.databases.query({ database_id: '35f2587452bd4416be5728aee43f2fcd' });
-        cachedMenuItems = response.results;  // Actualizar caché en variable
-        myCache.set(cacheKey, response.results);  // Actualizar caché en servidor
 
-        res.json(response.results);
+        // Agrupa los elementos por tipo
+        const grouped = {};
+        for (const item of response.results) {
+            const type = item.type; // Suponiendo que "type" es un campo
+            if (!grouped[type]) {
+                grouped[type] = [];
+            }
+            grouped[type].push(item);
+        }
+
+        // Actualiza las variables de caché y responde
+        cachedMenuItems = grouped;
+        myCache.set(cacheKey, grouped);
+        res.json(grouped);
+
     } catch (error) {
-        // Manejar error
+        // Manejar error, por ejemplo, enviar una respuesta de error
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+app.post('/add-item', express.json(), async (req, res) => {
+    const { name, price, imageUrl, description, category } = req.body;
+    try {
+        // Código para añadir el nuevo elemento a la base de datos de Notion
+        await notion.pages.create({
+            parent: { database_id: '35f2587452bd4416be5728aee43f2fcd' },
+            properties: {
+                'nombre': {
+                    'title': [{ 'text': { 'content': name } }]
+                },
+                'precio': {
+                    'number': price
+                },
+                'url-imagen': {
+                    'url': imageUrl
+                },
+                'descripcion': {
+                    'rich_text': [{ 'text': { 'content': description } }]
+                },
+                'categoria': {
+                    'select': { 'name': category }
+                }
+            }
+        });
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Error adding new item:", error);
+        res.status(500).json({ error: 'Error adding new item' });
     }
 });
