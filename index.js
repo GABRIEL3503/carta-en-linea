@@ -24,7 +24,7 @@ app.get('/menu', async (req, res) => {
         
         // Ordenar los elementos según la categoría
         const sortedItems = response.results.sort((a, b) => {
-            const order = ["postre", "bebida","plato"];
+            const order = ["Postres", "Bebidas","Platos"];
             const aValue = a.properties.categoria && a.properties.categoria.select ? a.properties.categoria.select.name : "";
             const bValue = b.properties.categoria && b.properties.categoria.select ? b.properties.categoria.select.name : "";
             return order.indexOf(aValue) - order.indexOf(bValue);

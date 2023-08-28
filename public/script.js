@@ -117,9 +117,9 @@ function showAddForm() {
             <input id="swal-input-image-url" class="swal2-input" placeholder="URL de imagen">
             <textarea id="swal-input-description" class="swal2-textarea" placeholder="Descripción"></textarea>
             <select id="swal-input-category" class="swal2-input">
-                <option value="plato">Plato</option>
-                <option value="bebida">Bebida</option>
-                <option value="postre">Postre</option>
+                <option value="platos">Platos</option>
+                <option value="bebidas">Bebidas</option>
+                <option value="postres">Postres</option>
             </select>
         `,
         focusConfirm: false,
