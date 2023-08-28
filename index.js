@@ -24,13 +24,15 @@ app.get('/menu', async (req, res) => {
         
         // Ordenar los elementos según la categoría
         const sortedItems = response.results.sort((a, b) => {
-            const order = ["plato", "bebida", "postre"];
+            const order = ["postre", "bebida","plato"];
             const aValue = a.properties.categoria && a.properties.categoria.select ? a.properties.categoria.select.name : "";
             const bValue = b.properties.categoria && b.properties.categoria.select ? b.properties.categoria.select.name : "";
             return order.indexOf(aValue) - order.indexOf(bValue);
         });
-        
-        res.json(sortedItems);  // Envía los elementos ordenados al frontend
+        // Invertir el arreglo
+        const reversedItems = sortedItems.reverse();
+
+        res.json(reversedItems);  // Envía los elementos ordenados al frontend
 
     } catch (error) {
         console.error("Error fetching data from Notion:", error);
@@ -62,5 +64,31 @@ app.post('/update-item', express.json(), async (req, res) => {
     } catch (error) {
         console.error("Error updating item in Notion:", error);  // <-- Agrega esta línea aquí
         res.status(500).json({ error: 'Error updating item in Notion' });
+    }
+});
+
+
+let cachedMenuItems = null;  // Caché en variable
+
+app.get('/menu', async (req, res) => {
+    const cacheKey = "menuItems";
+    const cachedData = myCache.get(cacheKey);  // Caché en servidor
+    
+    if (cachedData) {
+        return res.json(cachedData);
+    }
+
+    if (cachedMenuItems) {  // Caché en variable
+        return res.json(cachedMenuItems);
+    }
+
+    try {
+        const response = await notion.databases.query({ database_id: '35f2587452bd4416be5728aee43f2fcd' });
+        cachedMenuItems = response.results;  // Actualizar caché en variable
+        myCache.set(cacheKey, response.results);  // Actualizar caché en servidor
+
+        res.json(response.results);
+    } catch (error) {
+        // Manejar error
     }
 });

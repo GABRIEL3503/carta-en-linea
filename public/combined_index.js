@@ -94,3 +94,21 @@ function showEditForm(item) {
 }
 
 
+function loadMenu() {
+    const cachedData = localStorage.getItem('menuItems');  // Caché en navegador
+    
+    if (cachedData) {
+        renderMenu(JSON.parse(cachedData));
+        return;
+    }
+
+    fetch('/menu')
+    .then(response => response.json())
+    .then(data => {
+        localStorage.setItem('menuItems', JSON.stringify(data));  // Actualizar caché en navegador
+        renderMenu(data);
+    })
+    .catch(error => {
+        console.error("Error loading menu data:", error);
+    });
+}
