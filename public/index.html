@@ -32,27 +32,33 @@
 
 
 
-  function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-  const email = profile.getEmail();
-  
-  // Selecciona todos los botones con la clase "btn-especial"
-  const specialButtons = document.querySelectorAll('.btn-especial');
-  
-  if (email === 'octopus.wd@gmail.com') {
-    // Muestra todos los botones
-    specialButtons.forEach(button => {
-      button.style.display = 'block';  // O 'block', dependiendo de tu diseño
-    });
-  } 
-}
-
  
 
   </script>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="script.js"></script>
-  
+  <script>
+ let userEmail = null;  // Variable global para el correo
+
+// Función para actualizar la visibilidad de los botones
+function updateButtonVisibility() {
+  const specialButtons = document.querySelectorAll('.btn-especial');
+  specialButtons.forEach(button => {
+    if (userEmail === 'octopus.wd@gmail.com') {
+      button.style.display = 'block';
+    } else {
+      button.style.display = 'none';
+    }
+  });
+}
+
+// Función de inicio de sesión de Google
+function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  userEmail = profile.getEmail();
+  updateButtonVisibility();  // Actualizar la visibilidad de los botones
+}
+  </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 
