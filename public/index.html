@@ -42,6 +42,7 @@
 
 // Función para actualizar la visibilidad de los botones
 function updateButtonVisibility() {
+  if (!userEmail) return;  
   const specialButtons = document.querySelectorAll('.btn-especial');
   specialButtons.forEach(button => {
     if (userEmail === 'octopus.wd@gmail.com') {
