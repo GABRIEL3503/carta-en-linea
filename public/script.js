@@ -165,3 +165,51 @@ function showAddForm() {
                     }
     });
 }
+document.getElementById('loginButton').addEventListener('click', function() {
+    Swal.fire({
+      title: 'Inicio de sesión',
+      html: `
+        <label for="swal-input-password">Contraseña</label>
+        <input id="swal-input-password" class="swal2-input" type="password">
+      `,
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          document.getElementById('swal-input-password').value
+        ];
+      }
+    }).then(result => {
+      if (result.isConfirmed) {
+        const [password] = result.value;
+        checkPassword(password);
+      }
+    });
+  });
+
+  // Leer el estado del almacenamiento local al cargar la página
+window.addEventListener('load', function() {
+    const savedIsAdmin = localStorage.getItem('isAdmin');
+    if (savedIsAdmin === 'true') {
+      isAdmin = true;
+      updateButtonVisibility();
+      // Cambiar el texto del botón a "Salir"
+      document.getElementById('loginButton').innerText = 'Login';
+    }
+  });
+  
+  function logout() {
+    isAdmin = false;
+    // Eliminar el estado del almacenamiento local
+    localStorage.removeItem('isAdmin');
+    updateButtonVisibility();
+    // Cambiar el texto del botón a "Login"
+    document.getElementById('loginButton').innerText = 'Login';
+  }
+
+  document.getElementById('loginButton').addEventListener('click', function() {
+  if (isAdmin) {
+    logout();
+  } else {
+    // Mostrar el modal de SweetAlert2 (como en el código anterior)
+  }
+});
