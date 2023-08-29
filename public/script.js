@@ -50,7 +50,7 @@ data.forEach(item => {
                 editButton.onclick = () => showEditForm(item);
                 editButton.classList.add('btn-especial');  // Agregar la clase 'btn-especial'
                 menuItem.appendChild(editButton);
-                updateButtonVisibility();
+              
                 
 
                 menuContainer.appendChild(menuItem);
@@ -61,13 +61,13 @@ addButton.innerText = 'Agregar nuevo elemento';
 addButton.onclick = () => showAddForm();
 addButton.classList.add('btn-especial');  // Agregar la clase 'btn-especial'
 menuContainer.appendChild(addButton);
-updateButtonVisibility();
+
     })
     .catch(error => {
         console.error("Error loading menu data:", error);
     });
     // Al final de tu función loadMenu()
-
+    updateButtonVisibility();
 
 }
 
