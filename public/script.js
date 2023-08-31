@@ -143,8 +143,6 @@ function showAddForm() {
     }).then(result => {
         if (result.isConfirmed) {
             const newData = result.value;
-            if (result.isConfirmed) {
-                const newData = result.value;
                 
                 fetch('/add-item', {
                     method: 'POST',
@@ -163,7 +161,7 @@ function showAddForm() {
                 });
             }
                     }
-    });
+    );
 }
 document.getElementById('loginButton').addEventListener('click', function() {
     Swal.fire({
@@ -186,30 +184,30 @@ document.getElementById('loginButton').addEventListener('click', function() {
     });
   });
 
-  // Leer el estado del almacenamiento local al cargar la página
-window.addEventListener('load', function() {
-    const savedIsAdmin = localStorage.getItem('isAdmin');
-    if (savedIsAdmin === 'true') {
-      isAdmin = true;
-      updateButtonVisibility();
-      // Cambiar el texto del botón a "Salir"
-      document.getElementById('loginButton').innerText = 'Login';
-    }
-  });
+//   // Leer el estado del almacenamiento local al cargar la página
+// window.addEventListener('load', function() {
+//     const savedIsAdmin = localStorage.getItem('isAdmin');
+//     if (savedIsAdmin === 'true') {
+//       isAdmin = true;
+//       updateButtonVisibility();
+//       // Cambiar el texto del botón a "Salir"
+//       document.getElementById('loginButton').innerText = 'Login';
+//     }
+//   });
   
-  function logout() {
-    isAdmin = false;
-    // Eliminar el estado del almacenamiento local
-    localStorage.removeItem('isAdmin');
-    updateButtonVisibility();
-    // Cambiar el texto del botón a "Login"
-    document.getElementById('loginButton').innerText = 'Login';
-  }
+//   function logout() {
+//     isAdmin = false;
+//     // Eliminar el estado del almacenamiento local
+//     localStorage.removeItem('isAdmin');
+//     updateButtonVisibility();
+//     // Cambiar el texto del botón a "Login"
+//     document.getElementById('loginButton').innerText = 'Login';
+//   }
 
-  document.getElementById('loginButton').addEventListener('click', function() {
-  if (isAdmin) {
-    logout();
-  } else {
-    // Mostrar el modal de SweetAlert2 (como en el código anterior)
-  }
-});
+//   document.getElementById('loginButton').addEventListener('click', function() {
+//   if (isAdmin) {
+//     logout();
+//   } else {
+//     // Mostrar el modal de SweetAlert2 (como en el código anterior)
+//   }
+// });
