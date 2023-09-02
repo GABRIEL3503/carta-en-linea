@@ -24,7 +24,7 @@ app.get('/menu', async (req, res) => {
         
         // Ordenar los elementos según la categoría
         const sortedItems = response.results.sort((a, b) => {
-            const order = ["Postres", "Bebidas","Platos"];
+            const order = ["Postres", "Tragos","Platos"];
             const aValue = a.properties.categoria && a.properties.categoria.select ? a.properties.categoria.select.name : "";
             const bValue = b.properties.categoria && b.properties.categoria.select ? b.properties.categoria.select.name : "";
             return order.indexOf(aValue) - order.indexOf(bValue);
@@ -62,7 +62,7 @@ app.post('/update-item', express.json(), async (req, res) => {
         });
         res.json({ success: true });
     } catch (error) {
-        console.error("Error updating item in Notion:", error);  // <-- Agrega esta línea aquí
+        console.error("Error updating item in Notion:", error);  
         res.status(500).json({ error: 'Error updating item in Notion' });
     }
 });
@@ -107,27 +107,30 @@ app.get('/menu', async (req, res) => {
 });
 app.post('/add-item', express.json(), async (req, res) => {
     const { name, price, imageUrl, description, category } = req.body;
+    const properties = {
+        'nombre': {
+            'title': [{ 'text': { 'content': name } }]
+        },
+        'precio': {
+            'number': price
+        },
+        'descripcion': {
+            'rich_text': [{ 'text': { 'content': description } }]
+        },
+        'categoria': {
+            'multi_select': [{ 'name': category }]  // Aquí cambiamos 'select' por 'multi_select'
+        }
+    };
+
+    // Si la categoría no es "bebidas", incluye la URL de la imagen.
+    if (category !== "Bebidas") {
+        properties['url-imagen'] = { 'url': imageUrl };
+    }
+
     try {
-        // Código para añadir el nuevo elemento a la base de datos de Notion
         await notion.pages.create({
             parent: { database_id: '35f2587452bd4416be5728aee43f2fcd' },
-            properties: {
-                'nombre': {
-                    'title': [{ 'text': { 'content': name } }]
-                },
-                'precio': {
-                    'number': price
-                },
-                'url-imagen': {
-                    'url': imageUrl
-                },
-                'descripcion': {
-                    'rich_text': [{ 'text': { 'content': description } }]
-                },
-                'categoria': {
-                    'select': { 'name': category }
-                }
-            }
+            properties: properties
         });
 
         res.json({ success: true });
@@ -136,3 +139,4 @@ app.post('/add-item', express.json(), async (req, res) => {
         res.status(500).json({ error: 'Error adding new item' });
     }
 });
+

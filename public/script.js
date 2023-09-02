@@ -25,12 +25,23 @@ data.forEach(item => {
             groupedMenu[category].forEach(item => {
                 const menuItem = document.createElement('div');
                 menuItem.classList.add('menu-item');
-
-
-                const image = document.createElement('img');
-                image.src = item.properties["url-imagen"].url;
-                image.alt = item.properties.nombre.title[0].plain_text;
-                menuItem.appendChild(image);
+            
+                // Verifica si la propiedad "url-imagen" y su valor "url" existen
+                if (item.properties["url-imagen"] && item.properties["url-imagen"].url) {
+                    const image = document.createElement('img');
+                    image.src = item.properties["url-imagen"].url;
+                    image.alt = item.properties.nombre.title[0].plain_text;
+                    menuItem.appendChild(image);
+                } else {
+                    // Opcionalmente, puedes crear un div con una clase específica que tenga un fondo o algo similar para ítems sin imágenes.
+                    const imagePlaceholder = document.createElement('div');
+                    imagePlaceholder.classList.add('image-placeholder');
+                    menuItem.appendChild(imagePlaceholder);
+                }
+            
+                // ... (resto del código)
+           
+            
 
                 const title = document.createElement('h2');
                 title.innerText = item.properties.nombre.title[0].plain_text;
@@ -79,7 +90,7 @@ function showEditForm(item) {
         html: `
             <input id="swal-input-name" class="swal2-input" value="${properties.nombre.title[0].plain_text}" placeholder="Nombre">
             <input id="swal-input-price" class="swal2-input" value="${properties.precio.number}" placeholder="Precio">
-            <input id="swal-input-image-url" class="swal2-input" value="${properties["url-imagen"].url}" placeholder="URL de imagen">
+            <input id="swal-input-image-url" class="swal2-input" value="${properties["url-imagen"] ? properties["url-imagen"].url : ''}" placeholder="URL de imagen">
             <textarea id="swal-input-description" class="swal2-textarea">${properties.descripcion.rich_text[0]?.plain_text || ''}</textarea>
         `,
         focusConfirm: false,
@@ -94,7 +105,10 @@ function showEditForm(item) {
     }).then(result => {
         if (result.isConfirmed) {
             const updatedData = result.value;
-
+   // Si imageUrl está vacío, configurarlo como null
+   if (updatedData.imageUrl === "") {
+    updatedData.imageUrl = null;
+}
             fetch('/update-item', {
                 method: 'POST',
                 headers: {
@@ -126,8 +140,9 @@ function showAddForm() {
             <textarea id="swal-input-description" class="swal2-textarea" placeholder="Descripción"></textarea>
             <select id="swal-input-category" class="swal2-input">
                 <option value="platos">Platos</option>
-                <option value="bebidas">Bebidas</option>
+                <option value="tragos">Tragos</option>
                 <option value="postres">Postres</option>
+                <option value="bebidas">Bebidas</option> 
             </select>
         `,
         focusConfirm: false,
@@ -143,7 +158,10 @@ function showAddForm() {
     }).then(result => {
         if (result.isConfirmed) {
             const newData = result.value;
-                
+            if (newData.category === "Bebidas") {
+                // Eliminar la propiedad imageUrl para la categoría Bebidas
+                delete newData.imageUrl;
+            }
                 fetch('/add-item', {
                     method: 'POST',
                     headers: {
@@ -184,30 +202,3 @@ document.getElementById('loginButton').addEventListener('click', function() {
     });
   });
 
-//   // Leer el estado del almacenamiento local al cargar la página
-// window.addEventListener('load', function() {
-//     const savedIsAdmin = localStorage.getItem('isAdmin');
-//     if (savedIsAdmin === 'true') {
-//       isAdmin = true;
-//       updateButtonVisibility();
-//       // Cambiar el texto del botón a "Salir"
-//       document.getElementById('loginButton').innerText = 'Login';
-//     }
-//   });
-  
-//   function logout() {
-//     isAdmin = false;
-//     // Eliminar el estado del almacenamiento local
-//     localStorage.removeItem('isAdmin');
-//     updateButtonVisibility();
-//     // Cambiar el texto del botón a "Login"
-//     document.getElementById('loginButton').innerText = 'Login';
-//   }
-
-//   document.getElementById('loginButton').addEventListener('click', function() {
-//   if (isAdmin) {
-//     logout();
-//   } else {
-//     // Mostrar el modal de SweetAlert2 (como en el código anterior)
-//   }
-// });
