@@ -92,7 +92,9 @@ function showEditForm(item) {
             <input id="swal-input-price" class="swal2-input" value="${properties.precio.number}" placeholder="Precio">
             <input id="swal-input-image-url" class="swal2-input" value="${properties["url-imagen"] ? properties["url-imagen"].url : ''}" placeholder="URL de imagen">
             <textarea id="swal-input-description" class="swal2-textarea">${properties.descripcion.rich_text[0]?.plain_text || ''}</textarea>
-        `,
+            <button id="swal-delete-button" class="swal2-delete-button">Eliminar</button>
+
+            `,
         focusConfirm: false,
         preConfirm: () => {
             return {
@@ -129,7 +131,14 @@ function showEditForm(item) {
             });
         }
     });
+     // Escucha del botón de eliminar
+     document.getElementById('swal-delete-button').addEventListener('click', () => {
+        deleteItem(item.id);
+    });
 }
+
+
+
 function showAddForm() {
     Swal.fire({
         title: 'Agregar ítem',
@@ -138,12 +147,12 @@ function showAddForm() {
             <input id="swal-input-price" class="swal2-input" placeholder="Precio">
             <input id="swal-input-image-url" class="swal2-input" placeholder="URL de imagen">
             <textarea id="swal-input-description" class="swal2-textarea" placeholder="Descripción"></textarea>
-            <select id="swal-input-category" class="swal2-input">
-                <option value="platos">Platos</option>
-                <option value="tragos">Tragos</option>
-                <option value="postres">Postres</option>
-                <option value="bebidas">Bebidas</option> 
-            </select>
+            // <select id="swal-input-category" class="swal2-input">
+            //     <option value="platos">Platos</option>
+            //     <option value="tragos">Tragos</option>
+            //     <option value="postres">Postres</option>
+            //     <option value="bebidas">Bebidas</option> 
+            // </select>
         `,
         focusConfirm: false,
         preConfirm: () => {
@@ -158,9 +167,9 @@ function showAddForm() {
     }).then(result => {
         if (result.isConfirmed) {
             const newData = result.value;
-            if (newData.category === "Bebidas") {
-                // Eliminar la propiedad imageUrl para la categoría Bebidas
-                delete newData.imageUrl;
+            
+            if (newData.imageUrl === "") {
+                newData.imageUrl = null;  // Configurar como null si está vacío
             }
                 fetch('/add-item', {
                     method: 'POST',
@@ -202,3 +211,17 @@ document.getElementById('loginButton').addEventListener('click', function() {
     });
   });
 
+  function deleteItem(itemId) {
+    fetch(`/delete-item/${itemId}`, {
+        method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.close();  // Cerrar el modal actual
+            location.reload();  // Recargar la página
+        } else {
+            Swal.fire('Error', 'No se pudo eliminar el ítem.', 'error');
+        }
+    });
+}

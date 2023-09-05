@@ -35,13 +35,17 @@ img{
     font-size: 40px;
 }
 h2{
+    text-transform: uppercase;
+    letter-spacing: 0.1em; 
     font-family: 'Oswald', sans-serif;
     margin-bottom: -56px;
     font-weight: 500;
     font-size: 34px;
 }
 p{
-
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.1em; 
+font-weight: 200;
     font-size:20px ;
 }
 .logo{
@@ -90,4 +94,18 @@ button{
 display: none;
 }
 
+  
+ .subtitulo {
+    position: relative;
+  }
+  
+ .subtitulo::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 15%;
+    background: linear-gradient(90deg, rgb(75 75 75) 0%, rgba(0,204,255,1) 100%);
+  }
   

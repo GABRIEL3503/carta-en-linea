@@ -42,27 +42,30 @@ app.get('/menu', async (req, res) => {
 
 app.post('/update-item', express.json(), async (req, res) => {
     const { itemId, name, price, imageUrl, description } = req.body;
+    const properties = {
+        'nombre': {
+            'title': [{ 'text': { 'content': name } }]
+        },
+        'precio': {
+            'number': price
+        },
+        'descripcion': {
+            'rich_text': [{ 'text': { 'content': description } }]
+        }
+    };
+    
+    if (imageUrl) {
+        properties['url-imagen'] = { 'url': imageUrl };
+    }
+
     try {
         await notion.pages.update({
             page_id: itemId,
-            properties: {
-                'nombre': {
-                    'title': [{ 'text': { 'content': name } }]
-                },
-                'precio': {
-                    'number': price
-                },
-                'url-imagen': {
-                    'url': imageUrl
-                },
-                'descripcion': {
-                    'rich_text': [{ 'text': { 'content': description } }]
-                }
-            }
+            properties: properties
         });
         res.json({ success: true });
     } catch (error) {
-        console.error("Error updating item in Notion:", error);  
+        console.error("Error updating item in Notion:", error);
         res.status(500).json({ error: 'Error updating item in Notion' });
     }
 });
@@ -122,11 +125,9 @@ app.post('/add-item', express.json(), async (req, res) => {
         }
     };
 
-    // Si la categoría no es "bebidas", incluye la URL de la imagen.
-    if (category !== "Bebidas") {
+    if (imageUrl !== null) {
         properties['url-imagen'] = { 'url': imageUrl };
     }
-
     try {
         await notion.pages.create({
             parent: { database_id: '35f2587452bd4416be5728aee43f2fcd' },
@@ -140,3 +141,16 @@ app.post('/add-item', express.json(), async (req, res) => {
     }
 });
 
+app.delete('/delete-item/:itemId', async (req, res) => {
+    const { itemId } = req.params;
+    try {
+        await notion.pages.update({
+            page_id: itemId,
+            archived: true  // Archivar la página en lugar de eliminarla
+        });
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Error deleting item in Notion:", error);
+        res.status(500).json({ error: 'Error deleting item in Notion' });
+    }
+});
