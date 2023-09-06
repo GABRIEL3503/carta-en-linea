@@ -16,11 +16,16 @@ data.forEach(item => {
 });
 
 
-        Object.keys(groupedMenu).forEach(category => {
-            const subtitle = document.createElement('h2');
-            subtitle.innerText = category;
-            subtitle.classList.add('subtitulo');
-            menuContainer.appendChild(subtitle);
+const navList = document.querySelector('.nav-list');
+
+Object.keys(groupedMenu).forEach(category => {
+    const listItem = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = '#' + category.replace(/\s+/g, '-').toLowerCase();  // Asegúrate de que esto coincida con cómo generas los IDs
+    link.innerText = category;
+    listItem.appendChild(link);
+    navList.appendChild(listItem);
+
 
             groupedMenu[category].forEach(item => {
                 const menuItem = document.createElement('div');
@@ -225,3 +230,10 @@ document.getElementById('loginButton').addEventListener('click', function() {
         }
     });
 }
+const mobileMenuButton = document.getElementById("mobile-menu");
+const navList = document.querySelector(".nav-list");
+
+mobileMenuButton.addEventListener("click", () => {
+  navList.classList.toggle("active");
+  mobileMenuButton.classList.toggle("toggle");
+});

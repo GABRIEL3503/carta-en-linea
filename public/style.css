@@ -4,7 +4,97 @@ body {font-family: 'Oswald', sans-serif;
     padding: 0;
     background-image:url(fondo.jpg);
 }
+.navbar {
+    margin-bottom: -9px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    background-color: #0a0a0a;
+    padding: 15px;
+  }
+  
+ 
+  
+  .nav-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+  }
+  
+  .nav-list li {
+    margin: 0 15px;
+  }
+  
+  .nav-list a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    height: 30px;
+    justify-content: space-between;
+  }
+  
+  .bar {
+    background-color: white;
+    height: 3px;
+    width: 25px;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .menu-toggle {
+      display: flex;
+    }
+  
+    .nav-list {
+        max-height: 0;
+        overflow: hidden;
+        transition:  0.9s ease-in-out;
+     
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      top: 92px;
+      left: 0;
+      background-color: #131313;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .nav-list.active {
+     
+      display: flex;
+      max-height: 500px; /* Ajusta este valor según la altura máxima que necesites */
 
+    }
+  }
+  
+  .menu-toggle.toggle {
+    margin-left: 186px;
+    flex-direction: unset;
+  }
+  
+  .menu-toggle.toggle .bar:nth-child(1) {
+    transform: rotate(45deg);
+    position: relative;
+    top: 12px;
+  }
+  
+  .menu-toggle.toggle .bar:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .menu-toggle.toggle .bar:nth-child(3) {
+    right: 50px;
+    left: 9;
+    transform: rotate(-45deg);
+    position: relative;
+    bottom: -12px;
+  }
+  
 h1 {
     text-align: center;
     padding: 20px;
@@ -22,7 +112,7 @@ h1 {
   
 }
 .menu-item{
-    margin-bottom: 24px;
+    margin-bottom: 99px;
 }
 img{
    width: 40vw;
@@ -43,6 +133,7 @@ h2{
     font-size: 34px;
 }
 p{
+    margin-top: 3px;
     font-family: 'Oswald', sans-serif;
     letter-spacing: 0.1em; 
 font-weight: 200;
