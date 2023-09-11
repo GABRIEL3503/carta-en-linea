@@ -181,8 +181,24 @@ function showEditForm(item) {
         deleteItem(item.id);
     });
 }
+const backToTopButton = document.getElementById("back-to-top");
 
+// Detectar el scroll
+window.addEventListener("scroll", () => {
+  if (window.pageYOffset > 300) { // Muestra el botón después de haber bajado 300px
+    backToTopButton.style.display = "block";
+  } else {
+    backToTopButton.style.display = "none";
+  }
+});
 
+// Al hacer clic, subir al inicio de la página
+backToTopButton.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
 
 function showAddForm() {
     Swal.fire({

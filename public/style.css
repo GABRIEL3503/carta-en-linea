@@ -332,4 +332,18 @@ display: none;
     justify-content: center;
     align-items: center;
   }
-  
+  .back-to-top {
+    border: none;
+    background-color: transparent;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-size: 18px;
+
+    color: #fff;
+  }
+  #back{
+    width: 48px!important;
+  }
+    
