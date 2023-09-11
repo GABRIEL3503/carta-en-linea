@@ -197,7 +197,7 @@ display: none;
     left: 0;
     bottom: 0;
     height: 2px;
-    width: 15%;
+    width: 105px;
     background: linear-gradient(90deg, rgb(75 75 75) 0%, rgba(0,204,255,1) 100%);
   }
   
