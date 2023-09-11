@@ -76,15 +76,17 @@ function loadMenu() {
                     title.innerText = item.properties.nombre.title[0].plain_text;
                     menuItem.appendChild(title);
 
-                    const price = document.createElement('p');
-                    price.innerText = `$${item.properties.precio.number}`;
-                    price.classList.add('price');
-                    menuItem.appendChild(price);
 
                     const description = document.createElement('p');
                     description.innerText = item.properties.descripcion.rich_text[0].plain_text;
                     menuItem.appendChild(description);
 
+                    
+                    const price = document.createElement('p');
+                    price.innerText = `$${item.properties.precio.number}`;
+                    price.classList.add('price');
+                    menuItem.appendChild(price);
+                    
                     const editButton = document.createElement('button');
                     editButton.innerText = 'Editar';
                     editButton.onclick = () => showEditForm(item);
