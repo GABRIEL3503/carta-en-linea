@@ -56,6 +56,7 @@ function loadMenu() {
                     const menuItem = document.createElement('div');
                     menuItem.classList.add('menu-item');
 
+                    
                     // Verifica si la propiedad "url-imagen" y su valor "url" existen
                     if (item.properties["url-imagen"] && item.properties["url-imagen"].url) {
                         const image = document.createElement('img');
@@ -86,7 +87,7 @@ function loadMenu() {
                     price.innerText = `$${item.properties.precio.number}`;
                     price.classList.add('price');
                     menuItem.appendChild(price);
-                    
+
                     const editButton = document.createElement('button');
                     editButton.innerText = 'Editar';
                     editButton.onclick = () => showEditForm(item);
@@ -156,7 +157,7 @@ function showEditForm(item) {
             const updatedData = result.value;
             // Si imageUrl está vacío, configurarlo como null
             if (updatedData.imageUrl === "") {
-                updatedData.imageUrl = null;
+                updatedData.imageUrl = "";
             }
             fetch('/update-item', {
                 method: 'POST',
@@ -293,5 +294,5 @@ const navList = document.querySelector(".nav-list");
 
 mobileMenuButton.addEventListener("click", () => {
     navList.classList.toggle("active");
-    mobileMenuButton.classList.toggle("toggle");
+    // mobileMenuButton.classList.toggle("toggle");
 });
