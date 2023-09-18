@@ -1,8 +1,10 @@
 const express = require('express');
+const NodeCache = require('node-cache');
 const { Client } = require('@notionhq/client');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const myCache = new NodeCache();  // Inicializar el caché
 
 
 // Inicializar el cliente de Notion
@@ -17,6 +19,12 @@ app.listen(PORT, () => {
 });
 
 app.get('/menu', async (req, res) => {
+    const cacheKey = "menuItems";
+    const cachedData = myCache.get(cacheKey);
+
+    if (cachedData) {
+        return res.json(cachedData);
+    }
     try {
         const response = await notion.databases.query({
             database_id: '35f2587452bd4416be5728aee43f2fcd'
@@ -33,7 +41,8 @@ app.get('/menu', async (req, res) => {
         const reversedItems = sortedItems.reverse();
 
         res.json(reversedItems);  // Envía los elementos ordenados al frontend
-
+        myCache.set(cacheKey, response.results);
+        res.json(response.results);
     } catch (error) {
         console.error("Error fetching data from Notion:", error);
         res.status(500).json({ error: 'Error fetching data from Notion' });
@@ -68,6 +77,8 @@ app.post('/update-item', express.json(), async (req, res) => {
         console.error("Error updating item in Notion:", error);
         res.status(500).json({ error: 'Error updating item in Notion' });
     }
+    myCache.del("menuItems");  // Invalidar el caché
+    res.json({ success: true });
 });
 
 
@@ -153,4 +164,6 @@ app.delete('/delete-item/:itemId', async (req, res) => {
         console.error("Error deleting item in Notion:", error);
         res.status(500).json({ error: 'Error deleting item in Notion' });
     }
+    myCache.del("menuItems");  // Invalidar el caché
+    res.json({ success: true });
 });
